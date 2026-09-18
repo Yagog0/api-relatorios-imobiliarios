@@ -1,0 +1,89 @@
+openapi: 3.0.3
+info:
+  title: API de Relatórios Imobiliários - Hands on Work VII
+  version: 1.0.0
+  description: >-
+    Serviços REST em PHP que carregam todas as transações do banco relacional
+    e realizam os agrupamentos e cálculos em memória.
+servers:
+  - url: http://localhost/hands_on_work_vii/public
+    description: Ambiente local com Apache
+paths:
+  /api/pagamentos-por-imovel.php:
+    get:
+      summary: Soma acumulada de pagamentos por imóvel
+      responses:
+        '200':
+          description: Lista de imóveis e valores acumulados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PagamentoPorImovel'
+  /api/vendas-por-mes.php:
+    get:
+      summary: Total de vendas por mês/ano
+      responses:
+        '200':
+          description: Lista de períodos e totais.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VendaPorMes'
+  /api/percentual-por-tipo.php:
+    get:
+      summary: Percentual do valor total por tipo de imóvel
+      responses:
+        '200':
+          description: Lista de tipos e percentuais.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PercentualPorTipo'
+components:
+  schemas:
+    PagamentoPorImovel:
+      type: object
+      required: [id_imovel, codigo_imovel, total_pagamentos]
+      properties:
+        id_imovel:
+          type: integer
+          example: 1
+        codigo_imovel:
+          type: string
+          example: IMV-1001
+        total_pagamentos:
+          type: number
+          format: double
+          example: 26700.00
+    VendaPorMes:
+      type: object
+      required: [mes_ano, total_vendas]
+      properties:
+        mes_ano:
+          type: string
+          example: 01/2026
+        total_vendas:
+          type: number
+          format: double
+          example: 31200.00
+    PercentualPorTipo:
+      type: object
+      required: [tipo_imovel, valor_total, percentual]
+      properties:
+        tipo_imovel:
+          type: string
+          example: Apartamento
+        valor_total:
+          type: number
+          format: double
+          example: 60000.00
+        percentual:
+          type: number
+          format: double
+          example: 33.24
